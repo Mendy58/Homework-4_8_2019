@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PpldbLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,23 +9,36 @@ namespace Homework_4_8_2019.Controllers
 {
     public class HomeController : Controller
     {
+        PpldbMgr mgr = new PpldbMgr(Properties.Settings.Default.ConStr);
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult AddPerson(Person p)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            mgr.AddPerson(p);
+            var people = mgr.GetPeople();
+            return Json(people);
         }
-
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult EditPerson(Person p)
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            mgr.UpdatePerson(p);
+            var people = mgr.GetPeople();
+            return Json(people);
+        }
+        [HttpPost]
+        public ActionResult DeletePerson(int id)
+        {
+            mgr.DeletePersonById(id);
+            var people = mgr.GetPeople();
+            return Json(people);
+        }
+        public ActionResult GetPeople()
+        {
+            var people = mgr.GetPeople();
+            return Json(people, JsonRequestBehavior.AllowGet);
         }
     }
 }
