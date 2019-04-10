@@ -22,7 +22,7 @@
 		$("#mdl-fn").val(``);
 		$("#mdl-ln").val(``);
 		$("#mdl-age").val(``);
-		$("#submit").val('Submit');
+		$("#submit").val("Submit");
 		$("#submit").attr('class', 'btn btn-primary');
 		$("#personmng").modal();
 	});
@@ -66,12 +66,17 @@
                                         <td>${Person.LastName}</td>
                                         <td>${Person.Age}</td>
 										<td>
-										<button class="btn btn-danger" data-id="${Person.Id}">Delete</button>
+										<button class="btn btn-danger delete" data-id="${Person.Id}">Delete</button>
 										<button class="btn btn-primary editperson" /*id="editperson${Person.Id}"*/ data-personid="${Person.Id}" data-fn="${Person.FirstName}" data-ln="${Person.LastName}" data-age="${Person.Age}">Edit</button>
 										</td>
                                  </tr>`);
 	}
-	$(".editperson").click(() => {
+	$("#people-tbl").on('click', '.delete', function () {
+		$.post('/home/DeletePerson', { id: $(this).data('personid') }, function (people) {
+			RefreshTable(people);
+		});
+	});
+	$("#people-tbl").on('click', '.editperson', function () {
 
 		const id = $(this).data('personid');
 		const firstName = $(this).data('fn');
