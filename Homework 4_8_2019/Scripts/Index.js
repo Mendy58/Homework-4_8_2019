@@ -1,18 +1,16 @@
 ﻿$(() => {
-	$.get('/home/GetPeople', function (people) {
-		RefreshTable(people);
-	});
+	RefreshTable();
 
 	$("#submit").click(() => {
 		if ($("#submit").text() === "submit") {
-			$.post('/home/AddPerson', { FirstName: $("#mdl-fn").val(), LastName: $("#mdl-ln").val(), Age: $("#mdl-age").val() }, function (people) {
-				RefreshTable(people);
+			$.post('/home/AddPerson', { FirstName: $("#mdl-fn").val(), LastName: $("#mdl-ln").val(), Age: $("#mdl-age").val() }, function () {
+				RefreshTable();
 			});
 		}
 		else if ($("#submit").text() === "Edit") {
 			//$("#edit").click(() => {
-				$.post('/home/EditPerson', { Id: $("#mdl-id").val(), FirstName: $("#mdl-fn").val(), LastName: $("#mdl-ln").val(), Age: $("#mdl-age").val() }, function (people) {
-					RefreshTable(people);
+			$.post('/home/EditPerson', { id: $("#mdl-id").val(), FirstName: $("#mdl-fn").val(), LastName: $("#mdl-ln").val(), Age: $("#mdl-age").val()}, function () {
+					RefreshTable();
 				});
 			//});
 		}
@@ -48,19 +46,35 @@
 
 	//function GetModalPerson() {
 	//   const Person = {
-	//		Id = $("#mdl-id").val(), 
-	//		FirstName = $("#mdl-fn").val(),
-	//		LastName = $("#mdl-ln").val(),
+	//		Id: $("#mdl-id").val(), 
+	//		FirstName: $("#mdl-fn").val(),
+	//		LastName: $("#mdl-ln").val(),
 	//		Age = $("#mdl-age").val(),
 	//	}
 	//	return Person
 	//}
 
+	function GetModalPerson() {
+       const Person = {
+            Id: $("#mdl-id").val(), 
+            FirstName: $("#mdl-fn").val(),
+            LastName: $("#mdl-ln").val(),
+            Age: $("#mdl-age").val(),
+        }
+        return Person
+    }
 
-	const RefreshTable = people => {
-		$(".tbltd").remove();
-		people.forEach(AddPersonToTable);
+	function RefreshTable() {
+		$.get('/home/GetPeople', function (people) {
+			$(".tbltd").remove();
+			people.forEach(AddPersonToTable);
+		});
 	}
+
+	//const RefreshTable = people => {
+	//	$(".tbltd").remove();
+	//	people.forEach(AddPersonToTable);
+	//}
 	const AddPersonToTable = Person => {
 		$("#people-tbl").append(`<tr class="tbltd">
                                         <td>${Person.FirstName}</td>
@@ -73,8 +87,8 @@
                                  </tr>`);
 	}
 	$("#people-tbl").on('click', '.delete', function () {
-		$.post('/home/DeletePerson', { id: $(this).data('id') }, function (people) {
-			RefreshTable(people);
+		$.post('/home/DeletePerson', { id: $(this).data('id') }, function () {
+			RefreshTable();
 		});
 	});
 	$("#people-tbl").on('click', '.editperson', function () {

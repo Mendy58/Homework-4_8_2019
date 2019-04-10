@@ -15,25 +15,19 @@ namespace Homework_4_8_2019.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddPerson(Person p)
+        public void AddPerson(Person p)
         {
             mgr.AddPerson(p);
-            var people = mgr.GetPeople();
-            return Json(people);
         }
         [HttpPost]
-        public ActionResult EditPerson(Person p)
+        public void EditPerson(Person p)
         {
             mgr.UpdatePerson(p);
-            var people = mgr.GetPeople();
-            return Json(people);
         }
         [HttpPost]
-        public ActionResult DeletePerson(int id)
+        public void DeletePerson(int id)
         {
             mgr.DeletePersonById(id);
-            var people = mgr.GetPeople();
-            return Json(people);
         }
         public ActionResult GetPeople()
         {
