@@ -103,9 +103,5 @@ namespace PpldbLibrary
                 
             }
         }
-        public void Nothing()
-        {
-            Console.Beep();
-        }
     }
 }
